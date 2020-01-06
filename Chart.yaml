@@ -1,0 +1,5 @@
+apiVersion: v1
+appVersion: "1.0"
+description: My test chart spinning the docker of "my-docker-test"
+name: my-helm-test
+version: 0.1.0
