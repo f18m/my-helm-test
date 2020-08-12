@@ -4,8 +4,8 @@
 
 replicaCount: 1
 image:
-  repository: mytest
-  tag: "1.1"
+  repository: f18m/my-docker-test
+  tag: "1.2"
   pullPolicy: IfNotPresent
 service:
   type: NodePort
