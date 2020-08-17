@@ -6,6 +6,8 @@
 # HELM_VERSION must match the one in Chart.yaml
 HELM_VERSION:=1.2.0-helm
 
+
+
 all:
 	helm lint .
 	helm template .
@@ -16,13 +18,37 @@ all:
 test:
 	helm uninstall mytest-chart || true
 	helm install mytest-chart ./my-helm-test-$(HELM_VERSION).tgz
+	@read -n1 -p " ****************** Hit a key to continue ****************** "
 	helm ls --all
-	# the test chart will install: a) a deployment, b) a service
+	@read -n1 -p " ****************** Hit a key to continue ****************** "
+	# the test chart will install: a) a deployment, b) a service, c) a configmpa
+	@echo
+	@echo
 	kubectl describe deployment mytest-chart-my-helm-test
+	@echo
+	@echo
 	kubectl describe svc mytest-chart-my-helm-test
+	@echo
+	@echo
+	kubectl describe configmap mychart-configmap
+	@echo
+	@echo
+	@read -n1 -p " ****************** Hit a key to continue ****************** "
 	# now verify if the mytest POD has been deployed successfully:
-	kubectl describe pod
 	kubectl get pod -o wide
+	@echo
+	@echo
+	@read -n1 -p " ****************** Hit a key to continue ****************** "
+	kubectl describe pod
+	@echo
+	@echo
+	@read -n1 -p " ****************** Hit a key to continue ****************** "
+	kubectl logs $(shell kubectl get pod --selector=app.kubernetes.io/instance=mytest-chart -o json | jq -r '.items[0].metadata.name')
+	@echo
+	@echo
+
+run-pod-bash:
+	kubectl exec -ti $(shell kubectl get pod --selector=app.kubernetes.io/instance=mytest-chart -o json | jq -r '.items[0].metadata.name') -- /bin/bash
 
 #
 #start-minikube:          # BEWARE: running twice seems a Bad Thing

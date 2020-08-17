@@ -20,7 +20,17 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: HELM_TEST_ENV
+            value: "Hello from my-helm-test"
           ports:
             - name: http
               containerPort: 8080
               protocol: TCP
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/configmap
+      volumes:
+        - name: config-volume
+          configMap:
+            name: mychart-configmap

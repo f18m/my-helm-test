@@ -1,5 +1,6 @@
-apiVersion: v1
+apiVersion: v2
 appVersion: "1.1"
 description: My test chart spinning the docker of "my-docker-test"
 name: my-helm-test
 version: 1.2.0-helm
+type: application
